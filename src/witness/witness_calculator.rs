@@ -60,11 +60,11 @@ impl WitnessCalculator {
 
     pub fn from_file(path: impl AsRef<std::path::Path>) -> Result<Self> {
         let store = Store::default();
-        println!("from_file: {}", SystemTime::now());
+        println!("from_file: {:?}", SystemTime::now());
         let module = Module::from_file(&store, path)?;
-        println!("from_module: {}", SystemTime::now());
+        println!("from_module: {:?}", SystemTime::now());
         let ret = Self::from_module(module);
-        println!("wt_done: {}", SystemTime::now());
+        println!("wt_done: {:?}", SystemTime::now());
         ret
     }
 

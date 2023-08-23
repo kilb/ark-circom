@@ -29,7 +29,7 @@ impl<E: PairingEngine> CircomConfig<E> {
         let wtns = WitnessCalculator::new(wtns).unwrap();
         let reader = File::open(r1cs)?;
         let r1cs = R1CSFile::new(reader)?.into();
-        println!("cc_done: {}", SystemTime::now());
+        println!("cc_done: {:?}", SystemTime::now());
         Ok(Self {
             wtns,
             r1cs,

@@ -8,6 +8,7 @@ use std::collections::HashMap;
 
 use crate::{circom::R1CSFile, witness::WitnessCalculator};
 use color_eyre::Result;
+use std::time::SystemTime;
 
 #[derive(Clone, Debug)]
 pub struct CircomBuilder<E: PairingEngine> {
@@ -28,6 +29,7 @@ impl<E: PairingEngine> CircomConfig<E> {
         let wtns = WitnessCalculator::new(wtns).unwrap();
         let reader = File::open(r1cs)?;
         let r1cs = R1CSFile::new(reader)?.into();
+        println!("cc_done: {}", SystemTime::now());
         Ok(Self {
             wtns,
             r1cs,

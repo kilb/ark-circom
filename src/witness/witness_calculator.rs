@@ -4,6 +4,7 @@ use num_bigint::BigInt;
 use num_traits::Zero;
 use std::cell::Cell;
 use wasmer::{imports, Function, Instance, Memory, MemoryType, Module, RuntimeError, Store};
+use std::time::SystemTime;
 
 #[cfg(feature = "circom-2")]
 use num::ToPrimitive;
@@ -59,8 +60,12 @@ impl WitnessCalculator {
 
     pub fn from_file(path: impl AsRef<std::path::Path>) -> Result<Self> {
         let store = Store::default();
+        println!("from_file: {}", SystemTime::now());
         let module = Module::from_file(&store, path)?;
-        Self::from_module(module)
+        println!("from_module: {}", SystemTime::now());
+        let ret = Self::from_module(module);
+        println!("wt_done: {}", SystemTime::now());
+        ret
     }
 
     pub fn from_module(module: Module) -> Result<Self> {

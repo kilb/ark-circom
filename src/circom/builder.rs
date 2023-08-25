@@ -1,10 +1,12 @@
 use ark_ec::PairingEngine;
 use std::{fs::File, path::Path};
+use std::io::BufReader;
 
 use super::{CircomCircuit, R1CS};
 
 use num_bigint::BigInt;
 use std::collections::HashMap;
+
 
 use crate::{circom::R1CSFile, witness::WitnessCalculator};
 use color_eyre::Result;
@@ -27,7 +29,8 @@ pub struct CircomConfig<E: PairingEngine> {
 impl<E: PairingEngine> CircomConfig<E> {
     pub fn new(wtns: impl AsRef<Path>, r1cs: impl AsRef<Path>) -> Result<Self> {
         let wtns = WitnessCalculator::new(wtns).unwrap();
-        let reader = File::open(r1cs)?;
+        let file = File::open(r1cs)?;
+        let reader = BufReader::new(file);
         let r1cs = R1CSFile::new(reader)?.into();
         println!("cc_done: {:?}", SystemTime::now());
         Ok(Self {

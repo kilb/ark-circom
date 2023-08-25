@@ -39,6 +39,19 @@ impl<E: PairingEngine> CircomConfig<E> {
             sanity_check: false,
         })
     }
+
+    pub fn load(wtns: impl AsRef<Path>, r1cs: impl AsRef<Path>) -> Result<Self> {
+        let wtns = WitnessCalculator::load(wtns).unwrap();
+        let file = File::open(r1cs)?;
+        let reader = BufReader::new(file);
+        let r1cs = R1CSFile::new(reader)?.into();
+        println!("cc_done: {:?}", SystemTime::now());
+        Ok(Self {
+            wtns,
+            r1cs,
+            sanity_check: false,
+        })
+    }
 }
 
 impl<E: PairingEngine> CircomBuilder<E> {

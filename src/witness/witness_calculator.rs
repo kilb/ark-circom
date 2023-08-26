@@ -4,7 +4,6 @@ use num_bigint::BigInt;
 use num_traits::Zero;
 use std::cell::Cell;
 use wasmer::{imports, Function, Instance, Memory, MemoryType, Module, RuntimeError, Store};
-use std::time::SystemTime;
 
 #[cfg(feature = "circom-2")]
 use num::ToPrimitive;
@@ -60,32 +59,25 @@ impl WitnessCalculator {
 
     pub fn save(from: impl AsRef<std::path::Path>, to: impl AsRef<std::path::Path>) -> Result<()>{
         let store = Store::default();
-        println!("save_wt: {:?}", SystemTime::now());
         let module = Module::from_file(&store, from)?;
         module.serialize_to_file(to)?;
-        println!("save_wt_done: {:?}", SystemTime::now());
         Ok(())
     }
 
     pub fn load(path: impl AsRef<std::path::Path>) -> Result<Self> {
-        println!("load_wt: {:?}", SystemTime::now());
         let store = Store::default();
         let module = 
         unsafe {
             Module::deserialize_from_file(&store, path)?  
         };
         let ret = Self::from_module(module);
-        println!("load_wt_done: {:?}", SystemTime::now());
         ret
     }
 
     pub fn from_file(path: impl AsRef<std::path::Path>) -> Result<Self> {
         let store = Store::default();
-        println!("from_file: {:?}", SystemTime::now());
         let module = Module::from_file(&store, path)?;
-        println!("from_module: {:?}", SystemTime::now());
         let ret = Self::from_module(module);
-        println!("wt_done: {:?}", SystemTime::now());
         ret
     }
 
